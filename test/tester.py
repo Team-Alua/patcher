@@ -1,0 +1,126 @@
+import asyncio
+import websockets
+import json
+from base64 import b64encode
+
+savedata = open("data0000.bin", "rb")
+
+edits = [
+        [["StatisticalChart","DustyToken"], 99999.0],
+        [["CostumeUnlock","kit02"], True],
+        [["CostumeUnlock","kit03"], True],
+        [["CostumeUnlock","kit05"], True],
+        [["CostumeUnlock","kit06"], True],
+        [["CostumeUnlock","kit07"], True],
+        [["CostumeUnlock","kit08"], True],
+        [["CostumeUnlock","kit10"], True],
+        [["CostumeUnlock","kit13"], True],
+        [["CostumeUnlock","kit14"], True],
+        [["CostumeUnlock","kit15"], True],
+        [["CostumeUnlock","kit16"], True],
+        [["CostumeUnlock","kit18"], True],
+        [["Gesture","item_01"], True],
+        [["Gesture","item_02"], True],
+        [["Gesture","item_03"], True],
+        [["Gesture","item_04"], True],
+        [["Gesture","item_05"], True],
+        [["Gesture","item_06"], True],
+        [["Gesture","item_07"], True],
+        [["Gesture","item_08"], True],
+        [["Gesture","item_09"], True],
+        [["Gesture","item_10"], True],
+        [["Gesture","item_11"], True],
+        [["Gesture","item_12"], True],
+        [["Gesture","item_13"], True],
+        [["Gesture","item_14"], True],
+        [["Gesture","item_15"], True],
+        [["Gesture","item_16"], True],
+        [["Gesture","item_17"], True],
+        [["Gesture","item_18"], True],
+        [["Gesture","item_19"], True],
+        [["Gesture","item_20"], True],
+        [["HomeInfo", "Unlock", "kagu_01_01"], True],
+        [["HomeInfo", "Unlock", "kagu_01_02"], True],
+        [["HomeInfo", "Unlock", "kagu_01_03"], True],
+        [["HomeInfo", "Unlock", "kagu_01_04"], True],
+        [["HomeInfo", "Unlock", "kagu_02_01"], True],
+        [["HomeInfo", "Unlock", "kagu_02_02"], True],
+        [["HomeInfo", "Unlock", "kagu_02_03"], True],
+        [["HomeInfo", "Unlock", "kagu_02_04"], True],
+        [["HomeInfo", "Unlock", "kagu_03_01"], True],
+        [["HomeInfo", "Unlock", "kagu_03_02"], True],
+        [["HomeInfo", "Unlock", "kagu_03_03"], True],
+        [["HomeInfo", "Unlock", "kagu_03_04"], True],
+        [["HomeInfo", "Unlock", "kagu_04_01"], True],
+        [["HomeInfo", "Unlock", "kagu_04_02"], True],
+        [["HomeInfo", "Unlock", "kagu_04_03"], True],
+        [["HomeInfo", "Unlock", "kagu_04_04"], True],
+        [["HomeInfo", "Unlock", "kagu_05_01"], True],
+        [["HomeInfo", "Unlock", "kagu_05_02"], True],
+        [["HomeInfo", "Unlock", "kagu_05_03"], True],
+        [["HomeInfo", "Unlock", "kagu_05_04"], True],
+        [["HomeInfo", "Unlock", "kagu_06_01"], True],
+        [["HomeInfo", "Unlock", "kagu_06_02"], True],
+        [["HomeInfo", "Unlock", "kagu_06_03"], True],
+        [["HomeInfo", "Unlock", "kagu_06_04"], True],
+        [["HomeInfo", "Unlock", "kagu_07_01"], True],
+        [["HomeInfo", "Unlock", "kagu_07_02"], True],
+        [["HomeInfo", "Unlock", "kagu_07_03"], True],
+        [["HomeInfo", "Unlock", "kagu_07_04"], True],
+        [["HomeInfo", "Unlock", "kagu_08_01"], True],
+        [["HomeInfo", "Unlock", "kagu_08_02"], True],
+        [["HomeInfo", "Unlock", "kagu_08_03"], True],
+        [["HomeInfo", "Unlock", "kagu_08_04"], True],
+        [["HomeInfo", "Unlock", "kagu_09_01"], True],
+        [["HomeInfo", "Unlock", "kagu_09_02"], True],
+        [["HomeInfo", "Unlock", "kagu_09_03"], True],
+        [["HomeInfo", "Unlock", "kagu_10_01"], True],
+        [["HomeInfo", "Unlock", "kagu_11_01"], True],
+        [["HomeInfo", "Unlock", "kagu_12_01"], True],
+        [["HomeInfo", "Unlock", "kagu_13_01"], True],
+        [["PhotoItem", "item_01"], True],
+        [["PhotoItem", "item_02"], True],
+        [["PhotoItem", "item_03"], True],
+        [["PhotoItem", "item_04"], True],
+        [["PhotoItem", "item_05"], True],
+        [["PhotoItem", "item_06"], True],
+        [["PhotoItem", "item_07"], True],
+        [["PhotoItem", "item_08"], True],
+        [["PhotoItem", "item_09"], True],
+        [["PhotoItem", "item_10"], True],
+        [["PhotoItem", "item_11"], True],
+        [["PhotoItem", "item_12"], True],
+        [["PhotoItem", "item_13"], True],
+        [["PhotoItem", "item_14"], True],
+        [["PhotoItem", "item_15"], True],
+        [["PhotoItem", "item_16"], True],
+        [["PhotoItem", "item_17"], True],
+        [["PhotoItem", "item_18"], True],
+        [["PhotoItem", "item_19"], True],
+        [["PhotoItem", "item_20"], True],
+        [["PhotoItem", "item_21"], True],
+        [["PhotoItem", "item_22"], True],
+        [["PhotoItem", "item_23"], True],
+        [["PhotoItem", "item_24"], True],
+        [["PhotoItem", "item_25"], True],
+        [["PhotoItem", "item_26"], True],
+        [["PhotoItem", "item_27"], True],
+        [["PhotoItem", "item_28"], True],
+        [["PhotoItem", "item_29"], True],
+        [["Talisman", "Slot997"], [4450.0, 24832.0, 0.0, 0.0]], #Fisherman's Recipe
+        [["Talisman", "Slot998"], [4745.0, 0.0, 0.0, 0.0]],
+        [["Talisman", "Slot999"], [4875.0, 2816.0, 0.0, 0.0]]]
+
+async def test():
+    async with websockets.connect('ws://localhost:8000') as websocket:
+        payload = {"savedata": b64encode(savedata.read()).decode('ascii'), "edits": edits}
+        print(payload)
+        json_payload = json.dumps(payload)
+        print(len(json_payload))
+        await websocket.send(json_payload)
+        response = await websocket.recv()
+        print(response)
+
+        await websocket.close()
+
+asyncio.get_event_loop().run_until_complete(test())
